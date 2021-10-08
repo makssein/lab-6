@@ -12,7 +12,7 @@
 int main () {
     int matrix[N][M];
     int n, m;
-    int minPrime = INT_MAX;
+    int maxPrime = 0;
     int minElStolb = INT_MAX;
     int minElStroka = INT_MAX;
     int test;
@@ -42,12 +42,12 @@ int main () {
     for(int i = 0; i < n; i++){
         for(int j = 0; j < m; j++){
             if (matrix[i][j] >= 2){
-                for (int d = 2; d < matrix[i][j]; d++){
+                for (int d = 2; d <= matrix[i][j]; d++){
                     if(matrix[i][j] % d == 0)
                         checkPr = false;
                     if(checkPr){
-                        if(matrix[i][j] < minPrime)
-                            minPrime = matrix[i][j];
+                        if(matrix[i][j] > maxPrime)
+                            maxPrime = matrix[i][j];
                     }
                         
                 }
@@ -58,15 +58,16 @@ int main () {
     for(int j = 0; j < m; j++){
         for(int i = 0; i < n; i++){
             if(matrix[i][j] < minElStolb){
-                minElStolb = matrix[i][j];
-                test = j;
+                minElStolb = j;
                 minElStroka = i;
             }
         }
-        std::cout << minElStolb << ":" << minElStroka << test << std::endl;
-        matrix[minElStroka][test] = minPrime;
-        minElStolb = INT_MAX;
-        minElStroka = INT_MAX;
+        if(check){
+            matrix[minElStroka][minElStolb] = maxPrime;
+            minElStolb = INT_MAX;
+            minElStroka = INT_MAX;
+        }
+        
     }
     
     for(int i = 0; i < n; i++){
@@ -75,13 +76,6 @@ int main () {
         }
         out << std::endl;
     }
-    
-    std::cout << minPrime;
-
-    
-    /*if(check) {
-        
-    }*/
 
 
   return 0;
