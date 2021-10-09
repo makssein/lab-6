@@ -11,11 +11,12 @@
 
 int main () {
     int matrix[N][M];
-    int n, m;
+    int n, m, b;
+    b=0;
     int maxPrime = 0;
     int minElStolb = INT_MAX;
     int minElStroka = INT_MAX;
-    int test;
+    int test = INT_MAX;
     
     bool check = false;
     bool checkPr = true;
@@ -34,22 +35,24 @@ int main () {
     for(int i = 0; i < n; i++){
         for(int j = 0; j < m; j++){
             if(matrix[i][j] == matrix[i+1][j]){
-                check = true;
+                b+=1;
             }
         }
+        if(check && b==m)
+            check = true;
     }
     
     for(int i = 0; i < n; i++){
         for(int j = 0; j < m; j++){
+            checkPr = true; 
             if (matrix[i][j] >= 2){
-                for (int d = 2; d <= matrix[i][j]; d++){
-                    if(matrix[i][j] % d == 0)
-                        checkPr = false;
-                    if(checkPr){
-                        if(matrix[i][j] > maxPrime)
-                            maxPrime = matrix[i][j];
+                for (int d = 3; d < matrix[i][j]; d++)
+                    if(matrix[i][j] % d == 0){
+                        checkPr = false; break; 
                     }
-                        
+                if(checkPr){
+                    if(matrix[i][j] > maxPrime)
+                        maxPrime = matrix[i][j];
                 }
             }
         }
@@ -57,16 +60,19 @@ int main () {
     
     for(int j = 0; j < m; j++){
         for(int i = 0; i < n; i++){
-            if(matrix[i][j] < minElStolb){
+            if(matrix[i][j] < test){
                 minElStolb = j;
                 minElStroka = i;
+                test = matrix[i][j];
             }
         }
-        if(check){
+        if(check && b==m){
             matrix[minElStroka][minElStolb] = maxPrime;
             minElStolb = INT_MAX;
             minElStroka = INT_MAX;
         }
+        std::cout << test << std::endl;
+        test = INT_MAX;
         
     }
     
@@ -76,6 +82,8 @@ int main () {
         }
         out << std::endl;
     }
+    
+    
 
 
   return 0;
